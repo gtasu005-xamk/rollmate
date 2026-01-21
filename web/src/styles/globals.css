@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&display=swap');
+:root {
+  --bg: #0f0f10; /* very dark page background */
+  --surface: #151516; /* cards / panels */
+  --text: rgba(255, 255, 255, 0.95);
+  --muted: rgba(255, 255, 255, 0.65);
+  --accent: #4da3ff; /* link / accent blue */
+  --cta-bg: #f7f7f8; /* primary CTA button */
+  --cta-text: #0b0b0b;
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: var(--text);
+  background-color: var(--bg);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: underline;
+}
+a:hover {
+  color: #3b8fe6;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.05;
+  color: var(--text);
+  margin: 0 0 0.6em 0;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid rgba(11,11,11,0.06);
+  padding: 0.7em 1.4em;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: inherit;
+  background-color: var(--cta-bg);
+  color: var(--cta-text);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 1px 0 rgba(11,11,11,0.04);
+}
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(2,6,23,0.35);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Brand text (uses Bebas Neue) */
+.brand {
+  font-family: 'Bebas Neue', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.8rem;
+  letter-spacing: 0.6px;
+  color: var(--text);
+}
+
+/* Subtle surface card */
+.surface {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --surface: #f6f7fb;
+    --text: #0f1720;
+    --muted: rgba(15,23,32,0.6);
+    --accent: #4d63ff;
+    --cta-bg: #0b1220;
+    --cta-text: #ffffff;
+  }
+  a:hover {
+    color: #3b45f2;
+  }
+  button {
+    background-color: var(--cta-bg);
+    color: var(--cta-text);
+  }
+}
