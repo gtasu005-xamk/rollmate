@@ -1,14 +1,4 @@
-/**
- * Authentication router.
- *
- * Endpoints:
- * - POST /auth/register → create user and return access token
- * - POST /auth/login → verify credentials and return access token
- *
- * Notes:
- * - Uses bcrypt for password hashing and JWT for stateless auth
- * - Error responses follow `{ error: { code, message } }`
- */
+
 import { Router, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
@@ -35,16 +25,6 @@ function generateAccessToken(userId: string): string {
 }
 
 // POST /auth/register
-/**
- * Register a new user.
- *
- * Request: `{ email: string, password: string }`
- * Responses:
- * - 201 `{ accessToken, user: { id, email } }`
- * - 400 `VALIDATION_ERROR` when inputs are missing
- * - 409 `USER_EXISTS` when email already registered
- * - 500 `INTERNAL_ERROR` on unexpected failures
- */
 router.post("/register", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -87,16 +67,6 @@ router.post("/register", async (req: Request, res: Response) => {
 });
 
 // POST /auth/login
-/**
- * Authenticate existing user.
- *
- * Request: `{ email: string, password: string }`
- * Responses:
- * - 200 `{ accessToken, user: { id, email } }`
- * - 400 `VALIDATION_ERROR` when inputs are missing
- * - 401 `INVALID_CREDENTIALS` when email or password is wrong
- * - 500 `INTERNAL_ERROR` on unexpected failures
- */
 router.post("/login", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;

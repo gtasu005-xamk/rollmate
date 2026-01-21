@@ -1,25 +1,11 @@
-/**
- * Tasks router.
- *
- * Endpoints:
- * - GET /tasks → list all tasks ordered by created date desc
- * - POST /tasks → create a new task
- * - GET /tasks/:id → get a single task by ID
- * - PUT /tasks/:id → update a task (title or mark completed)
- * - DELETE /tasks/:id → delete a task
- *
- * Task model: { id, title, completed, createdAt, completedAt? }
- */
+
 import { Router } from "express";
 import { prisma } from "../prisma/client.js";
 
 const router = Router();
 
-/**
- * GET /tasks
- * List all tasks ordered by created date (latest first).
- * Response: 200 array of tasks.
- */
+//GET /tasks
+
 router.get("/", async (_req, res) => {
   const tasks = await prisma.task.findMany({
     orderBy: { createdAt: "desc" },
@@ -27,15 +13,9 @@ router.get("/", async (_req, res) => {
   res.json(tasks);
 });
 
-/**
- * POST /tasks
- * Create a new task.
- *
- * Expected body: `{ title: string }`
- * Responses:
- * - 201 created task
- * - 400 when title is missing or empty
- */
+
+//POST /tasks
+
 router.post("/", async (req, res) => {
   const { title } = req.body ?? {};
 
@@ -50,13 +30,9 @@ router.post("/", async (req, res) => {
   res.status(201).json(created);
 });
 
-/**
- * GET /tasks/:id
- * Fetch a single task by id.
- * Responses:
- * - 200 task object
- * - 404 when not found
- */
+
+//GET /tasks/:id
+
 router.get("/:id", async (req, res) => {
   const task = await prisma.task.findUnique({
     where: { id: req.params.id },
@@ -65,16 +41,8 @@ router.get("/:id", async (req, res) => {
   res.json(task);
 });
 
-/**
- * PUT /tasks/:id
- * Update a task (title and/or completed status).
- *
- * Expected body: `{ title?: string, completed?: boolean }`
- * Responses:
- * - 200 updated task
- * - 400 when validation fails
- * - 404 if task does not exist
- */
+//PUT /tasks/:id
+
 router.put("/:id", async (req, res) => {
   const { title, completed } = req.body ?? {};
 
@@ -110,13 +78,9 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-/**
- * DELETE /tasks/:id
- * Delete a task by id.
- * Responses:
- * - 204 on success
- * - 404 when task does not exist
- */
+
+//DELETE /tasks/:id
+
 router.delete("/:id", async (req, res) => {
   try {
     await prisma.task.delete({ where: { id: req.params.id } });
