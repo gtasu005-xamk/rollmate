@@ -1,0 +1,33 @@
+name: Deploy backend (small zip)
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build backend (tsc only)
+        working-directory: backend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Package (dist + prisma + package files)
+        working-directory: backend
+        run: |
+          zip -r deploy.zip dist prisma package.json package-lock.json
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: rollmate-swe-dev-api
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: backend/deploy.zip
