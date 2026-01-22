@@ -110,7 +110,7 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "space-between",
     gap: 16,
-    padding: "12px 16px",
+    padding: `calc(12px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 12px calc(16px + env(safe-area-inset-left))`,
     borderBottom: "1px solid rgba(255,255,255,0.12)",
   },
   brand: {
@@ -134,7 +134,7 @@ const styles: Record<string, CSSProperties> = {
     outline: "1px solid rgba(255,255,255,0.25)",
   },
   main: {
-    padding: "16px",
+    padding: `16px calc(16px + env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))`,
     flex: 1,
   },
   hamburger: {
