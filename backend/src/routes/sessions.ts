@@ -18,8 +18,9 @@ const clampScore = (n: unknown) => {
 };
 
 // GET /sessions
-router.get("/", async (_req: AuthRequest, res) => {
+router.get("/", async (req: AuthRequest, res) => {
   const sessions = await prisma.trainingSession.findMany({
+    where: { userId: req.userId },
     orderBy: { date: "desc" },
   });
   res.json(sessions);
@@ -28,10 +29,13 @@ router.get("/", async (_req: AuthRequest, res) => {
 /**
  * List past sessions up to the current time.
  */
-router.get("/past", async (_req, res) => {
+router.get("/past", async (req: AuthRequest, res) => {
   const now = new Date();
   const sessions = await prisma.trainingSession.findMany({
-    where: { date: { lte: now } },
+    where: { 
+      userId: req.userId,
+      date: { lte: now } 
+    },
     orderBy: { date: "desc" },
   });
   res.json(sessions);
@@ -39,29 +43,32 @@ router.get("/past", async (_req, res) => {
 
 // GET /sessions/:id
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req: AuthRequest, res) => {
+  const id = req.params.id as string;
   const session = await prisma.trainingSession.findUnique({
-    where: { id: req.params.id },
+    where: { id },
   });
   if (!session) return res.status(404).json({ error: "Not found" });
+  if (session.userId !== req.userId) return res.status(403).json({ error: "Forbidden" });
   res.json(session);
 });
 
 // POST /sessions
 
-router.post("/", async (req, res) => {
-const { date, feeling, performance, rating, feedback } = req.body ?? {};
+router.post("/", async (req: AuthRequest, res) => {
+  const { date, feeling, performance, rating, feedback } = req.body ?? {};
 
   const feelingV = clampScore(feeling);
   const performanceV = clampScore(performance);
   const ratingV = clampScore(rating);
 
- if (!date || feelingV === null || performanceV === null || ratingV === null) {
-  return res.status(400).json({ error: "Invalid payload" });
-}
+  if (!date || feelingV === null || performanceV === null || ratingV === null) {
+    return res.status(400).json({ error: "Invalid payload" });
+  }
 
   const created = await prisma.trainingSession.create({
     data: {
+      userId: req.userId as string,
       date: new Date(date),
       feeling: feelingV,
       performance: performanceV,
@@ -75,7 +82,7 @@ const { date, feeling, performance, rating, feedback } = req.body ?? {};
 
 // PUT /sessions/:id
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req: AuthRequest, res) => {
   const { date, feeling, performance, rating, feedback } = req.body ?? {};
 
   const updateData: any = {};
@@ -99,8 +106,16 @@ router.put("/:id", async (req, res) => {
   if (feedback !== undefined) updateData.feedback = feedback ? String(feedback) : null;
 
   try {
+    const id = req.params.id as string;
+    // Check ownership
+    const existing = await prisma.trainingSession.findUnique({
+      where: { id },
+    });
+    if (!existing) return res.status(404).json({ error: "Not found" });
+    if (existing.userId !== req.userId) return res.status(403).json({ error: "Forbidden" });
+
     const updated = await prisma.trainingSession.update({
-      where: { id: req.params.id },
+      where: { id },
       data: updateData as any,
     });
     res.json(updated);
@@ -111,9 +126,17 @@ router.put("/:id", async (req, res) => {
 
 // DELETE /sessions/:id
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req: AuthRequest, res) => {
   try {
-    await prisma.trainingSession.delete({ where: { id: req.params.id } });
+    const id = req.params.id as string;
+    // Check ownership
+    const existing = await prisma.trainingSession.findUnique({
+      where: { id },
+    });
+    if (!existing) return res.status(404).json({ error: "Not found" });
+    if (existing.userId !== req.userId) return res.status(403).json({ error: "Forbidden" });
+
+    await prisma.trainingSession.delete({ where: { id } });
     res.status(204).send();
   } catch {
     res.status(404).json({ error: "Not found" });
