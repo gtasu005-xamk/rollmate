@@ -68,6 +68,9 @@ resource "azurerm_linux_web_app" "api" {
     SCM_DO_BUILD_DURING_DEPLOYMENT = "false"
     WEBSITE_RUN_FROM_PACKAGE       = "1"
     
+    # CORS origin for web frontend
+    CORS_ORIGIN = azurerm_static_web_app.web.default_host_name
+    
     # Key Vault references (NO secret values here)
     DATABASE_URL = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/${var.database_url_secret_name})"
     JWT_SECRET   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/${var.jwt_secret_name})"
@@ -75,6 +78,16 @@ resource "azurerm_linux_web_app" "api" {
 
   tags = local.tags
 
+}
+
+resource "azurerm_static_web_app" "web" {
+  name                = "${var.prefix}-web"
+  location            = "westeurope"
+  resource_group_name = azurerm_resource_group.rg.name
+
+  sku_tier = "Free"
+
+  tags = local.tags
 }
 
 resource "azurerm_postgresql_flexible_server" "pg" {

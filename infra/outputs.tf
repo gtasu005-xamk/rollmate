@@ -50,3 +50,14 @@ output "database_url_secret_uri" {
 output "jwt_secret_uri" {
   value = "${azurerm_key_vault.kv.vault_uri}secrets/${var.jwt_secret_name}"
 }
+output "web_app_name" {
+  value = azurerm_static_web_app.web.name
+}
+
+output "web_app_url" {
+  value = "https://${azurerm_static_web_app.web.default_host_name}"
+}
+
+output "web_app_default_host_name" {
+  value = azurerm_static_web_app.web.default_host_name
+}

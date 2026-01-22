@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getThemes, createTheme, updateTheme, deleteTheme } from "../features/themes";
 import type { Theme, CreateThemeInput } from "../features/types";
 import ThemeList from "../components/ThemeList";

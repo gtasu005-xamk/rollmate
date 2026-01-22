@@ -21,6 +21,14 @@ export interface AuthRequest extends Request {
  * @param next Calls next middleware/handler when authentication succeeds
  */
 export function requireAuth(req: AuthRequest, res: Response, next: NextFunction): void {
+  // Development mode: bypass auth for testing
+  if (process.env.NODE_ENV !== "production") {
+    // Use a default test user ID in development
+    req.userId = process.env.DEV_USER_ID || "dev-user-001";
+    next();
+    return;
+  }
+
   try {
     const authHeader = req.headers.authorization;
     

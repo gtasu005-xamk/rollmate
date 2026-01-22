@@ -15,12 +15,16 @@ const app = express();
 
 
 app.use(helmet());
+
+const corsOrigin = process.env.NODE_ENV === "production"
+  ? (process.env.CORS_ORIGIN || "localhost:3000").split(",")
+  : true;
+
 app.use(cors({
-    origin: process.env.NODE_ENV === "production" 
-      ? ["https://yourdomain.com"]
-      : true, // Allow all origins in development
+    origin: corsOrigin,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   }));
 app.use(express.json());
 app.use(morgan("combined"));

@@ -1,16 +1,5 @@
 import { env } from "./env";
-import type {
-  Theme,
-  CreateThemeInput,
-  TrainingSession,
-  CreateTrainingSessionInput,
-  HealthResponse,
-  Note,
-  CreateNoteInput,
-  WeeklySummary,
-  Task,
-  CreateTaskInput,
-} from "../features/types";
+import type { Theme, CreateThemeInput, TrainingSession, CreateTrainingSessionInput, HealthResponse, Note, CreateNoteInput, WeeklySummary, Task, CreateTaskInput, } from "../features/types";
 
 // Store access token in localStorage
 function getAccessTokenFromStorage(): string | null {
