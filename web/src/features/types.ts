@@ -37,12 +37,6 @@ export type CreateNoteInput = {
   text: string;
 };
 
-export type WeeklySummary = {
-  weekStart: string; // ISO
-  sessionsCount: number;
-  totalDuration: number; // minutes
-};
-
 export type Task = {
   id: string;
   title: string;

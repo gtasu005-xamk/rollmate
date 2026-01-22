@@ -1,7 +1,7 @@
+// Production: direct backend URL (Free tier Static Web Apps doesn't support proxy)
+// Local dev: Vite proxy handles routing
 export const env = {
-  apiBaseUrl: (import.meta.env.VITE_API_BASE_URL as string) || "/",
+  apiBaseUrl: typeof window !== "undefined" && window.location.hostname.includes("azurestaticapps.net")
+    ? "https://rollmate-swe-dev-api.azurewebsites.net"
+    : "",
 };
-
-if (!import.meta.env.VITE_API_BASE_URL) {
-  console.info("VITE_API_BASE_URL not set — using / (same origin proxy)");
-}

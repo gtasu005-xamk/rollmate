@@ -1,4 +1,4 @@
-import { api, setAccessToken } from "../lib/apiClient";
+import { setAccessToken } from "../lib/apiClient";
 
 export async function logout(): Promise<void> {
   // Remove token from storage

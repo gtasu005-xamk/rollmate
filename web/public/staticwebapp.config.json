@@ -17,17 +17,12 @@
       "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/themes/*"
     },
     {
-      "route": "/summary/*",
-      "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/summary/*"
-    },
-    {
       "route": "/tasks/*",
       "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/tasks/*"
-    },
-    {
-      "route": "/*",
-      "serve": "/index.html",
-      "statusCode": 200
     }
-  ]
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/health", "/auth/*", "/sessions/*", "/themes/*", "/summary/*", "/tasks/*"]
+  }
 }
