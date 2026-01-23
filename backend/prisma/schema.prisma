@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -19,49 +19,29 @@ model User {
   email    String @unique
   password String
   createdAt DateTime @default(now())
-
-  trainingSessions TrainingSession[]
-  themes Theme[]
-  tasks Task[]
 }
 
 model TrainingSession {
   id          String   @id @default(uuid())
-  userId      String
   date        DateTime
   feeling     Int
   performance Int
   rating      Int
   feedback    String?
-  createdAt   DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
 }
 
 model Theme {
   id        String   @id @default(uuid())
-  userId    String
   name      String
   startAt   DateTime
   endAt     DateTime
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
 }
 
 model Task {
   id          String    @id @default(uuid())
-  userId      String
   title       String
   completed   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   completedAt DateTime?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
 }

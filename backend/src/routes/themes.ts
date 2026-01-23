@@ -16,9 +16,8 @@ const isValidDate = (v: unknown) => {
 
 // GET /themes
 
-router.get("/", async (req: AuthRequest, res) => {
+router.get("/", async (_req: AuthRequest, res) => {
   const themes = await prisma.theme.findMany({
-    where: { userId: req.userId },
     orderBy: { startAt: "desc" },
   });
   res.json(themes);
@@ -26,7 +25,7 @@ router.get("/", async (req: AuthRequest, res) => {
 
 // POST /themes
 
-router.post("/", async (req: AuthRequest, res) => {
+router.post("/", async (req, res) => {
   const { name, startAt, endAt } = req.body ?? {};
 
   if (!name || typeof name !== "string" || !name.trim()) {
@@ -46,11 +45,10 @@ router.post("/", async (req: AuthRequest, res) => {
 
   const created = await prisma.theme.create({
     data: {
-      userId: req.userId as string,
       name: name.trim(),
       startAt: start,
       endAt: end,
-    }
+    } // jos TS/Prisma-tyypit vielä temppuilee
   });
 
   res.status(201).json(created);
@@ -59,17 +57,9 @@ router.post("/", async (req: AuthRequest, res) => {
 // DELETE /themes/:id
 
 
-router.delete("/:id", async (req: AuthRequest, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const id = req.params.id as string;
-    // Check ownership
-    const existing = await prisma.theme.findUnique({
-      where: { id },
-    });
-    if (!existing) return res.status(404).json({ error: "Not found" });
-    if (existing.userId !== req.userId) return res.status(403).json({ error: "Forbidden" });
-
-    await prisma.theme.delete({ where: { id } });
+    await prisma.theme.delete({ where: { id: req.params.id } });
     res.status(204).send();
   } catch {
     res.status(404).json({ error: "Not found" });
