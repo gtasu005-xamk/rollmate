@@ -43,3 +43,6 @@ Outcome
 Correct Linux Prisma query engine generated.
 
 Application starts successfully on Azure App Service.
+
+
+“All domain data is scoped by userId extracted from JWT (Bearer auth). Prisma constraints enforce multi-tenant isolation at database level.”

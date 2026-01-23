@@ -2,22 +2,27 @@
   "routes": [
     {
       "route": "/health",
+      "methods": ["GET"],
       "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/health"
     },
     {
       "route": "/auth/*",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/auth/*"
     },
     {
       "route": "/sessions/*",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/sessions/*"
     },
     {
       "route": "/themes/*",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/themes/*"
     },
     {
       "route": "/tasks/*",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       "rewrite": "https://rollmate-swe-dev-api.azurewebsites.net/tasks/*"
     }
   ],

@@ -171,7 +171,7 @@ const styles: Record<string, CSSProperties> = {
   mobileMenu: {
     width: 260,
     background: "#151516",
-    padding: 12,
+    padding: `calc(12px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) 12px`,
     display: "flex",
     flexDirection: "column",
     gap: 8,
