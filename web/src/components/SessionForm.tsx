@@ -38,18 +38,50 @@ export default function SessionForm({
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required style={styles.input} />
       </div>
 
-      <div style={styles.rowContainer}>
-        <div style={styles.formGroupInline}>
-          <label style={styles.label}>Fiilis</label>
-          <input type="number" min={0} max={10} value={feeling} onChange={(e) => setFeeling(Number(e.target.value))} style={styles.input} />
+      <div style={styles.slidersContainer}>
+        <div style={styles.sliderGroup}>
+          <div style={styles.sliderHeader}>
+            <label style={styles.label}>Fiilis</label>
+            <span style={styles.valueDisplay}>{feeling}</span>
+          </div>
+          <input 
+            type="range" 
+            min={0} 
+            max={10} 
+            value={feeling} 
+            onChange={(e) => setFeeling(Number(e.target.value))} 
+            style={styles.slider}
+          />
         </div>
-        <div style={styles.formGroupInline}>
-          <label style={styles.label}>Suoritus</label>
-          <input type="number" min={0} max={10} value={performance} onChange={(e) => setPerformance(Number(e.target.value))} style={styles.input} />
+        
+        <div style={styles.sliderGroup}>
+          <div style={styles.sliderHeader}>
+            <label style={styles.label}>Suoritus</label>
+            <span style={styles.valueDisplay}>{performance}</span>
+          </div>
+          <input 
+            type="range" 
+            min={0} 
+            max={10} 
+            value={performance} 
+            onChange={(e) => setPerformance(Number(e.target.value))} 
+            style={styles.slider}
+          />
         </div>
-        <div style={styles.formGroupInline}>
-          <label style={styles.label}>Arvosana</label>
-          <input type="number" min={0} max={10} value={rating} onChange={(e) => setRating(Number(e.target.value))} style={styles.input} />
+        
+        <div style={styles.sliderGroup}>
+          <div style={styles.sliderHeader}>
+            <label style={styles.label}>Arvosana</label>
+            <span style={styles.valueDisplay}>{rating}</span>
+          </div>
+          <input 
+            type="range" 
+            min={0} 
+            max={10} 
+            value={rating} 
+            onChange={(e) => setRating(Number(e.target.value))} 
+            style={styles.slider}
+          />
         </div>
       </div>
 
@@ -96,6 +128,39 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     gap: 8,
     marginBottom: 12,
+  },
+  slidersContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 16,
+    marginBottom: 12,
+  },
+  sliderGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  sliderHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  valueDisplay: {
+    fontSize: "1.1rem",
+    fontWeight: 600,
+    color: "#4a9eff",
+    minWidth: 30,
+    textAlign: "right",
+  },
+  slider: {
+    width: "100%",
+    height: 8,
+    borderRadius: 4,
+    background: "linear-gradient(to right, #333, #4a9eff)",
+    outline: "none",
+    cursor: "pointer",
+    WebkitAppearance: "none",
+    appearance: "none",
   },
   label: {
     marginBottom: 4,
