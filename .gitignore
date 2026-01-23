@@ -1,6 +1,7 @@
 # Root-level gitignore for Rollmate project
 #git
 .github/
+.results/
 
 # Dependencies
 node_modules/
