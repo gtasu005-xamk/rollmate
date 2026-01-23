@@ -13,8 +13,6 @@ const app = express();
 
 app.use(helmet());
 
-// DEBUG: näet log streamissa että tämä app.ts build on käynnissä
-console.log("[BOOT] app.ts loaded at", new Date().toISOString());
 
 const corsOrigin =
   process.env.NODE_ENV === "production"
@@ -26,7 +24,7 @@ app.use(
     origin: corsOrigin,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: false, // pidä false jos käytät Bearer-token headeria (ei cookie-auth)
+    credentials: false, // pidä false jos käytät Bearer-token headeria 
   })
 );
 
