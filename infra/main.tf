@@ -64,14 +64,14 @@ resource "azurerm_linux_web_app" "api" {
   app_settings = {
     APPLICATION_INSIGHTS_CONNECTION_STRING = azurerm_application_insights.ai.connection_string
     
-    # Build configuration
+    # Build config
     SCM_DO_BUILD_DURING_DEPLOYMENT = "false"
     WEBSITE_RUN_FROM_PACKAGE       = "1"
     
     # CORS origin for web frontend
     CORS_ORIGIN = azurerm_static_web_app.web.default_host_name
     
-    # Key Vault references (NO secret values here)
+    # Key Vault references - no secrets here
     DATABASE_URL = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/${var.database_url_secret_name})"
     JWT_SECRET   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/${var.jwt_secret_name})"
   }
@@ -119,7 +119,7 @@ resource "azurerm_postgresql_flexible_server_database" "db" {
   charset   = "UTF8"
 }
 
-# Allow access from Azure services (incl. App Service) – dev/MVP friendly
+# DB - Allow access from Azure services
 resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_azure" {
   name             = "allow-azure-services"
   server_id        = azurerm_postgresql_flexible_server.pg.id
@@ -142,14 +142,14 @@ resource "azurerm_key_vault" "kv" {
   tags = local.tags
 }
 
-# Allow YOU (the current principal running Terraform) to set secrets in the vault
+# Key Vault access
 resource "azurerm_role_assignment" "kv_admin_current_user" {
   scope                = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Administrator"
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
-# Allow the Web App's System-assigned Managed Identity to read secrets
+# Managed identity access to key vault
 resource "azurerm_role_assignment" "kv_secrets_user_webapp" {
   scope                = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Secrets User"
