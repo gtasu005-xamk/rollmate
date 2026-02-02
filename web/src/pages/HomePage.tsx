@@ -34,9 +34,13 @@ export default function HomePage() {
   }, []);
 
   function currentTheme(): Theme | null {
-    const now = new Date().toISOString();
-    // pick first theme where now between startAt and endAt
-    return themes.find((t) => t.startAt <= now && now <= t.endAt) ?? null;
+    const today = new Date().toISOString().split('T')[0];
+    // pick first theme where today between startAt and endAt (date only, ignore time)
+    return themes.find((t) => {
+      const startDate = t.startAt.split('T')[0];
+      const endDate = t.endAt.split('T')[0];
+      return startDate <= today && today <= endDate;
+    }) ?? null;
   }
 
   async function handleCreate(payload: CreateTrainingSessionInput) {
